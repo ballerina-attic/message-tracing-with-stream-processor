@@ -1,6 +1,12 @@
 # Compiled class file
 *.class
 
+# Idea files
+.idea/
+
+# .ballerina file
+.ballerina/
+
 # Log file
 *.log
 
