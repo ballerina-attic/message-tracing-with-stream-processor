@@ -108,7 +108,8 @@ reporter.wso2sp.publisher.service.name="ballerina_hello_world"
     Parent ID - convert(parentId, 'string')
     Parent span is defined - true 
     ```
- - Leave the rest fields as default values for parent span.
+    
+- Leave the rest fields as default values for parent span.
 
 ### Development of student and marks service with Stream Processor
 
