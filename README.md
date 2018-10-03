@@ -1,4 +1,4 @@
-
+  [![Build Status](https://travis-ci.org/Shairam/message-tracing-with-stream-processor.svg?branch=master)](https://travis-ci.org/Shairam/message-tracing-with-stream-processor)
   
 ## Integration with WSO2 Stream Processor
 
