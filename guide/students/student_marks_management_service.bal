@@ -28,18 +28,8 @@ type Marks record {
     int science;
 };
 
-endpoint mysql:Client testDB1 {
-    host: "localhost",
-    port: 3306,
-    name: "testdb",
-    username: "root",
-    password: "",
-    poolOptions: { maximumPoolSize: 5 },
-    dbOptions: { useSSL: false }
-};
-
-// This service listener
-endpoint http:Listener listener {
+// This service listener.
+endpoint http:Listener marksServiceListener{
     port: 9191
 };
 
@@ -47,7 +37,7 @@ endpoint http:Listener listener {
 @http:ServiceConfig {
     basePath: "/marks"
 }
-service<http:Service> MarksData bind listener {
+service<http:Service> MarksData bind marksServiceListener {
     @http:ResourceConfig {
         methods:["GET"],
         path: "/getMarks/{stuId}"
@@ -58,41 +48,41 @@ service<http:Service> MarksData bind listener {
         json result = findMarks(untaint stuId);
         // Pass the obtained json object to the requested client.
         response.setJsonPayload(untaint result);
-        _ = httpConnection->respond(response);
+        _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e) };
     }
 }
 
 # `findMarks()` is a function to find a student's marks from the marks record database.
-#  + stuId -  This is the id of the student.
+#
+# + stuId -  This is the id of the student.
 # + return - This function returns a json object. If data is added it returns json containing a status and id of student added.
-#          If data is not added , it returns the json containing a status and error message.
+#            If data is not added , it returns the json containing a status and error message.
 
 public function findMarks(int stuId) returns (json) {
     json status = {};
     string sqlString = "SELECT * FROM marks WHERE student_Id = " + stuId;
     // Getting student marks of the given ID.
-    //Invoking select operation in testDB
-    var ret = testDB1->select(sqlString, Marks, loadToMemory = true);
-    // Stopping the previously started span
+        var ret = databaseEP->select(sqlString, Marks, loadToMemory = true);
 
-    //Assigning data obtained from db to a table
-    table<Marks> datatable;
+    // Assigning data obtained from db to a table.
+    table<Marks> dataTable;
     match ret {
-        table tableReturned => datatable = tableReturned;
-        error er => {
-             log:printError(er.message, err = er);
-            status = { "Status": "Select data from student table failed: ", "Error": er.message };
+        table tableReturned => dataTable = tableReturned;
+        error err => {
+            log:printError(err.message,err= err);
+            status = { "Status": "Select data from student table failed: ", "Error": err.message };
             return status;
         }
     }
     // Converting the obtained data in table format to json data.
-    var jsonConversionRet = <json>datatable;
+    var jsonConversionRet = <json>dataTable;
     match jsonConversionRet {
         json jsonRes => {
             status = jsonRes;
         }
-        error e => {
-            status = { "Status": "Data Not available", "Error": e.message };
+        error err => {
+            status = { "Status": "Data Not available", "Error": err.message };
+            log:printError(err.message,err = err);
         }
     }
     io:println(status);
