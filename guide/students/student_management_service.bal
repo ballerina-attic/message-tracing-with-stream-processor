@@ -73,10 +73,10 @@ service<http:Service> StudentData bind studentServiceListener {
         json payloadJson = check request.getJsonPayload();
 
         //Converting the payload to Student type.
-        Student studentData = check <Student>payloadJson;
+        Student studentDetails = check <Student>payloadJson;
 
         // Calling the function insertData to update database.
-        json returnValue = insertData (studentData.name, studentData.age, studentData.mobNo, studentData.address);
+        json returnValue = insertData (studentDetails.name, studentDetails.age, studentDetails.mobNo, studentDetails.address);
 
         // Send the response back to the client with the returned json value from insertData function.
         response.setJsonPayload(returnValue);
