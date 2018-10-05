@@ -6,7 +6,6 @@ endpoint http:Client studentDataEP  {
     url: "http://localhost:9292"
 };
 
-
 @test:Config
 // Function to test GET resource 'testError'.
 function testMockError() {

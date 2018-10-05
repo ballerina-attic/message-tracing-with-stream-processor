@@ -107,7 +107,7 @@ service<http:Service> StudentData bind studentServiceListener {
 
         // Match operator used to check if the response returned value with one of the types below.
         match returnValue {
-            table tableReturned => dt = tableReturned;
+            table tableReturned => dataTable = tableReturned;
             error e => io:println("Select data from student table failed: "
                     + e.message);
         }
@@ -170,9 +170,8 @@ service<http:Service> StudentData bind studentServiceListener {
         // Calling deleteData function with id as parameter and get a return json object.
         var returnValue = deleteData(stuId);
 
-
         // Pass the obtained json object to the request.
-        response.setJsonPayload(ret);
+        response.setJsonPayload(returnValue);
         _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e) };
         // The below function adds tags that are to be passed as metrics in the traces. These tags are added to the default ootb system span.
         _ = observe:addTagToSpan("tot_requests", <string>requestCounts);
