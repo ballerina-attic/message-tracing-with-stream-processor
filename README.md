@@ -3,7 +3,8 @@
 ## Integration with WSO2 Stream Processor
 
 WSO2 stream processor provides us with distributed message tracing. The Distributed Message Tracer allows you to trace the events which are produced while ballerina services serve for requests. The ballerina services send these tracing data as WSO2 events.
- 
+        
+    This guide provides instructions on how Ballerina can be used to integrate with Stream-Processor Message Tracer.
 The following are the sections available in this guide.
 
 - [What you'll build](#what-you’ll-build)
@@ -13,8 +14,7 @@ The following are the sections available in this guide.
 - [Testing with distributed message tracing](#testing-with-distributed-message-tracer.)
      - [Traces](#views-of-traces)
 
-## What you’ll build 
-
+## What you’ll build
 To perform this integration with Stream Processor,  a real world use case of a very simple student management system is used.
 
 ![SP](images/ballerina-sp.svg "Ballerina-SP")
@@ -24,17 +24,17 @@ To perform this integration with Stream Processor,  a real world use case of a v
 ## Prerequisites
  
 - [Ballerina Distribution](https://ballerina.io/learn/getting-started/)
-- [MYSQL](https://github.com/Shairam/ballerina-sp-tracing/blob/master/resources/testdb.sql)
+- [MySQL](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql)
 - [WSO2 - Stream Processor v4.3.0](https://github.com/wso2/product-sp/releases)
 - A Text Editor or an IDE 
 
 ## Implementation
 
-> If you want to skip the basics, you can download the GitHub repo and continue from the "Testing" section.
+> If you want to skip the basics, you can download the GitHub repo and continue from the [Testing](#testing) section.
 
 ### Implementing database
- - Start MYSQL server in your local machine.
- - Create a database with name `testdb` in your MYSQL localhost. If you want to skip the database implementation, then directly import the [testdb.sql](https://github.com/Shairam/ballerina-sp-tracing/blob/master/resources/testdb.sql) file into your localhost. You can find it in the Github repo.
+ - Start MySQL server in your local machine.
+ - Create a database with name `testdb` in your MySQL localhost. If you want to skip the database implementation, then directly import the [testdb.sql](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql) file into your localhost. You can find it in the Github repo.
  
  
  
@@ -44,7 +44,7 @@ To perform this integration with Stream Processor,  a real world use case of a v
  For the purpose of this guide, let's use the following package structure.
         
     
-    ballerina-sp-tracing
+    message-tracing-with-stream-processor
            └── guide
                 ├── students
                 │   ├── student_management_service.bal
@@ -56,7 +56,7 @@ To perform this integration with Stream Processor,  a real world use case of a v
 
 - Create the above directories in your local machine, along with the empty `.bal` files.
 
-- You have to add the following lines in your [ballerina.conf](https://github.com/Shairam/ballerina-sp-tracing/blob/master/ballerina.conf).
+- You have to add the following lines in your [ballerina.conf](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/ballerina.conf).
 
 ```ballerina
 [b7a.observability.tracing]
@@ -75,16 +75,14 @@ javax.net.ssl.trustStorePassword="admin"
 reporter.wso2sp.publisher.service.name="ballerina_hello_world"
 ```
 - In the ballerina.conf file for line number 11 and 12, you are required to give the appropriate absolute path to the following files mentioned in the lines.
-- You can find these files [here](https://github.com/Shairam/ballerina-sp-tracing/tree/extras-1/resources/main/resources).
-- Also you need to update the [data.agent.config.yaml](https://github.com/Shairam/ballerina-sp-tracing/blob/extras-1/resources/main/resources/data.agent.config.yaml) file by including the absolute path of the [required files](https://github.com/Shairam/ballerina-sp-tracing/tree/extras-1/resources/main/resources) in the following fields. 
+- You can find these files [here](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources).
+- Also you need to update the [data.agent.config.yaml](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/main/resources/data.agent.config.yaml) file by including the absolute path of the [required files](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources) in the following fields.
   - trustStorePath, keystoreLocation, secretPropertiesFile, masterKeyReaderFile .
-- Then open the terminal and navigate to `ballerina-sp-tracing/guide` and run Ballerina project initializing toolkit.
+- Then open the terminal and navigate to `message-tracing-with-stream-processor/guide` and run Ballerina project initializing toolkit.
 
   ``
      $ ballerina init
   ``
-  
-  
 - Also you need to clone and build the ballerina-sp-extension in the following repository [https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension](https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension)
 
 - After building  move to `ballerina-sp-extension/target/distribution/` and copy all the jar files to your `bre/lib` folder in your ballerina distribution.
@@ -441,7 +439,6 @@ public function getId(int mobNo) returns table|error {
 
 Now we will look into the implementation of obtaining the marks of the students from database through another service.
 
-
 ##### student_marks_management_service.bal
 
 ``` ballerina
@@ -777,7 +774,7 @@ function getMarks() {
 
 ### Invoking the student management service
 
-You can start both the services by opening a terminal and navigating to `ballerina-sp-tracing/guide`, and execute the following command.
+You can start both the services by opening a terminal and navigating to `message-tracing-with-stream-processor/guide`, and execute the following command.
 
 ```
 $ ballerina run --config <path-to-conf>/ballerina.conf students
@@ -786,7 +783,7 @@ $ ballerina run --config <path-to-conf>/ballerina.conf students
 - You need to start the WSO2 Stream Processor dashboard and worker and navigate to the portal page. Here again use `admin` for both the username and password.
 
  You can observe the service performance by making some http requests to the above services. This is made easy for you as 
- there is a client program implemented. You can start the client program by opening another terminal and navigating to ballerina-sp-tracing/guide
+ there is a client program implemented. You can start the client program by opening another terminal and navigating to message-tracing-with-stream-processor/guide
  and run the below command
  
  ```
@@ -797,7 +794,6 @@ $ ballerina run --config <path-to-conf>/ballerina.conf students
  
 #### Views of traces
  After making some http requests, go to the distributed message tracing dashboard in your WSO2 Stream Processor portal.
-
 
  - You are expected to see the traces as below when you press the search button in the dashboard.
  
