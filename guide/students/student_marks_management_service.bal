@@ -62,11 +62,11 @@ public function findMarks(int stuId) returns (json) {
     json status = {};
     string sqlString = "SELECT * FROM marks WHERE student_Id = " + stuId;
     // Getting student marks of the given ID.
-        var ret = databaseEP->select(sqlString, Marks, loadToMemory = true);
+        var returnValue = databaseEP->select(sqlString, Marks, loadToMemory = true);
 
     // Assigning data obtained from db to a table.
     table<Marks> dataTable;
-    match ret {
+    match returnValue {
         table tableReturned => dataTable = tableReturned;
         error err => {
             log:printError(err.message,err= err);
@@ -75,10 +75,10 @@ public function findMarks(int stuId) returns (json) {
         }
     }
     // Converting the obtained data in table format to json data.
-    var jsonConversionRet = <json>dataTable;
-    match jsonConversionRet {
-        json jsonRes => {
-            status = jsonRes;
+    var jsonConversionValue = <json>dataTable;
+    match jsonConversionValue {
+        json jsonResult => {
+            status = jsonResult;
         }
         error err => {
             status = { "Status": "Data Not available", "Error": err.message };
