@@ -1,4 +1,4 @@
-    [![Build Status](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)
+[![Build Status](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)
 
 ## Integration with WSO2 Stream Processor
 
