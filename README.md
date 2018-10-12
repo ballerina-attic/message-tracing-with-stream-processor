@@ -15,9 +15,16 @@ The following are the sections available in this guide.
      - [Traces](#views-of-traces)
 
 ## What you’ll build
-To perform this integration with Stream Processor,  a real world use case of a very simple student management system is used.
+To perform this integration with Honeycomb,  a real world use case of a very simple student management system is used.
+This system will illustrate the manipulation of student details in a school/college management system. The administrator will be able to perform the following actions in this service.
 
-![SP](images/ballerina-sp.svg "Ballerina-SP")
+    - Add a student's details to the system.
+    - List down all the student's details who are registered in the system.
+    - Delete a student's details from the system by providing student ID.
+    - Generate a mock error (for observability purposes).
+    - Get a student's marks list by providing student ID.
+
+![Honeycomb](images/ballerina-sp.svg "Ballerina-Honeycomb")
 
 - **Make Requests** : To perform actions on student  management service, a console based client program has been written in Ballerina for your ease of making requests.
 
@@ -35,15 +42,11 @@ To perform this integration with Stream Processor,  a real world use case of a v
 ### Implementing database
  - Start MySQL server in your local machine.
  - Create a database with name `testdb` in your MySQL localhost. If you want to skip the database implementation, then directly import the [testdb.sql](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql) file into your localhost. You can find it in the Github repo.
- 
- 
- 
 
 ### Create the project structure
         
  For the purpose of this guide, let's use the following package structure.
-        
-    
+ 
     message-tracing-with-stream-processor
            └── guide
                 ├── students
@@ -85,9 +88,9 @@ reporter.wso2sp.publisher.service.name="ballerina_hello_world"
   ``
 - Also you need to clone and build the ballerina-sp-extension in the following repository [https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension](https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension)
 
-- After building  move to `ballerina-sp-extension/target/distribution/` and copy all the jar files to your `bre/lib` folder in your ballerina distribution.
+- After the build  navigate to `ballerina-sp-extension/target/distribution/` and copy all the jar files to your `bre/lib` folder in your ballerina distribution.
 
-- Start WSO2 Stream Processor dashboard and worker. Set up the [distributed message tracing.](https://docs.wso2.com/display/SP420/Distributed+Message+Tracer)
+- Start WSO2 Stream Processor dashboard and worker. Set up  [distributed message tracing.](https://docs.wso2.com/display/SP420/Distributed+Message+Tracer)
 
 - Use `admin` as username and password. Include the following for your business rules.
 
@@ -106,11 +109,11 @@ reporter.wso2sp.publisher.service.name="ballerina_hello_world"
     Parent span is defined - true 
     ```
     
-- Leave the rest fields as default values for parent span.
+- Leave the rest of the fields as default values for parent span.
 
 ### Development of student and marks service with Stream Processor
 
-Now let us look into the implementation of the student management with observability.
+Now let us look into the implementation of the student management service with observability.
 
 ##### student_management_service.bal
 
@@ -793,7 +796,7 @@ $ ballerina run --config <path-to-conf>/ballerina.conf students
 ### Testing with Distributed Message Tracer.
  
 #### Views of traces
- After making some http requests, go to the distributed message tracing dashboard in your WSO2 Stream Processor portal.
+ After making some HTTP requests, go to the distributed message tracing dashboard in your WSO2 Stream Processor portal.
 
  - You are expected to see the traces as below when you press the search button in the dashboard.
  
@@ -807,16 +810,16 @@ $ ballerina run --config <path-to-conf>/ballerina.conf students
  
 ![SP](images/trace3.png "SP")
 
-- You can filter the received traces by providing the service names, time and/or resource names in the tracing search box.
+ You can filter the received traces by providing the service names, time and/or resource names in the tracing search box.
 
-  - Tracing search -
+ - Tracing search -
   
-  ![SP](images/trace6.png "SP")
+ ![SP](images/trace6.png "SP")
   
-  - Filter using service name and time -
+ - Filter using service name and time -
 
-   ![SP](images/trace5.png "SP")
+ ![SP](images/trace5.png "SP")
      
-  - Filter using resource name and time -
+ - Filter using resource name and time -
 
-   ![SP](images/trace4.png "SP")
+  ![SP](images/trace4.png "SP")
