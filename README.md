@@ -4,7 +4,8 @@
 
 WSO2 stream processor provides us with distributed message tracing. The Distributed Message Tracer allows you to trace the events which are produced while ballerina services serve for requests. The ballerina services send these tracing data as WSO2 events.
         
-    This guide provides instructions on how Ballerina can be used to integrate with Stream-Processor Message Tracer.
+  >This guide provides instructions on how Ballerina can be used to integrate with Stream-Processor Message Tracer.
+  
 The following are the sections available in this guide.
 
 - [What you'll build](#what-you’ll-build)
@@ -15,7 +16,7 @@ The following are the sections available in this guide.
      - [Traces](#views-of-traces)
 
 ## What you’ll build
-To perform this integration with Honeycomb,  a real world use case of a very simple student management system is used.
+To perform this integration with Distributed Message Tracer, a real world use case of a very simple student management system is used.
 This system will illustrate the manipulation of student details in a school/college management system. The administrator will be able to perform the following actions in this service.
 
     - Add a student's details to the system.
@@ -32,7 +33,7 @@ This system will illustrate the manipulation of student details in a school/coll
  
 - [Ballerina Distribution](https://ballerina.io/learn/getting-started/)
 - [MySQL](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql)
-- [WSO2 - Stream Processor v4.3.0](https://github.com/wso2/product-sp/releases)
+- [WSO2 - Stream Processor v4.3.0 or above](https://github.com/wso2/product-sp/releases)
 - A Text Editor or an IDE 
 
 ## Implementation
