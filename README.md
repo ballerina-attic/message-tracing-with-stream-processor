@@ -62,7 +62,7 @@ This system will illustrate the manipulation of student details in a school/coll
 
 - You have to add the following lines in your [ballerina.conf](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/ballerina.conf).
 
-```ballerina
+```toml
 [b7a.observability.tracing]
 enabled=true
 name="wso2sp"
