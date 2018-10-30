@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)
+[![Build Status](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor.svg?branch=master)](https://travis-ci.org/ballerina-guides/message-tracing-with-stream-processor)
 
-## Integration with WSO2 Stream Processor
+# Integration with WSO2 Stream Processor
 
 WSO2 stream processor provides us with distributed message tracing. The Distributed Message Tracer allows you to trace the events which are produced while ballerina services serve for requests. The ballerina services send these tracing data as WSO2 events.
         
