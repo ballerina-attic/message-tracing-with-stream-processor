@@ -2,9 +2,8 @@
 
 # Integration with WSO2 Stream Processor
 
-WSO2 stream processor provides us with distributed message tracing. The Distributed Message Tracer allows you to trace the events which are produced while ballerina services serve for requests. The ballerina services send these tracing data as WSO2 events.
-        
-  >This guide provides instructions on how Ballerina can be used to integrate with Stream-Processor Message Tracer.
+WSO2 Stream Processor (SP) enables you to perform distributed message tracing. The Distributed Message Tracer allows you to trace the events that are produced, while Ballerina services serve the requests. The Ballerina services send the tracing data as WSO2 events to WSO2 SP.
+  >This guide provides instructions on how Ballerina can be used to integrate with Stream-Processor.
   
 The following are the sections available in this guide.
 
@@ -17,7 +16,7 @@ The following are the sections available in this guide.
 
 ## What you’ll build
 To perform this integration with Distributed Message Tracer, a real world use case of a very simple student management system is used.
-This system will illustrate the manipulation of student details in a school/college management system. The administrator will be able to perform the following actions in this service.
+This system illustrates the manipulation of student details in a school/college management system. The administrator is able to perform the following actions in this service.
 
     - Add a student's details to the system.
     - List down all the student's details who are registered in the system.
@@ -25,13 +24,13 @@ This system will illustrate the manipulation of student details in a school/coll
     - Generate a mock error (for observability purposes).
     - Get a student's marks list by providing student ID.
 
-![Honeycomb](images/ballerina-sp.svg "Ballerina-Honeycomb")
+![Message-Tracing](images/ballerina-sp.svg "Message-Tracing")
 
-- **Make Requests** : To perform actions on student  management service, a console based client program has been written in Ballerina for your ease of making requests.
+- **Make Requests** : To perform actions on student management service, a console-based client program has been written in Ballerina for your ease of making requests.
 
 ## Prerequisites
  
-- [Ballerina Distribution](https://ballerina.io/learn/getting-started/)
+- [Ballerina Distribution](https://ballerina.io/downloads/)
 - [MySQL](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql)
 - [WSO2 - Stream Processor v4.3.0 or above](https://github.com/wso2/product-sp/releases)
 - A Text Editor or an IDE 
@@ -41,8 +40,8 @@ This system will illustrate the manipulation of student details in a school/coll
 > If you want to skip the basics, you can download the GitHub repo and continue from the [Testing](#testing) section.
 
 ### Implementing database
- - Start MySQL server in your local machine.
- - Create a database with name `testdb` in your MySQL localhost. If you want to skip the database implementation, then directly import the [testdb.sql](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql) file into your localhost. You can find it in the Github repo.
+ 1. Start MySQL server in your local machine.
+ 2. Create a database named `testdb` in your MySQL localhost. If you want to skip the database implementation, then directly import the [testdb.sql](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql) file into your localhost. You can find it in the GitHub repo.
 
 ### Create the project structure
         
@@ -58,9 +57,9 @@ This system will illustrate the manipulation of student details in a school/coll
                 └── ballerina.conf
         
 
-- Create the above directories in your local machine, along with the empty `.bal` files.
+1. Create the above directories in your local machine, along with the empty `.bal` files.
 
-- You have to add the following lines in your [ballerina.conf](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/ballerina.conf).
+2. Add the following lines in your [ballerina.conf](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/ballerina.conf).
 
 ```toml
 [b7a.observability.tracing]
@@ -78,20 +77,20 @@ javax.net.ssl.trustStore="<SET ABSOLUTE PATH>/wso2carbon.jks"
 javax.net.ssl.trustStorePassword="admin"
 reporter.wso2sp.publisher.service.name="ballerina_hello_world"
 ```
-- In the ballerina.conf file for line number 11 and 12, you are required to give the appropriate absolute path to the following files mentioned in the lines.
+- In the ballerina.conf file, the absolute path has to be set for the databridge agent config yaml file and the wso2carbon.jks file in order to configure the databridge agent and the wso2carbon keystore.
 - You can find these files [here](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources).
-- Also you need to update the [data.agent.config.yaml](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/main/resources/data.agent.config.yaml) file by including the absolute path of the [required files](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources) in the following fields.
+- Also update the [data.agent.config.yaml](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/main/resources/data.agent.config.yaml) file by including the absolute path of the [required files](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources) in the following fields.
   - trustStorePath, keystoreLocation, secretPropertiesFile, masterKeyReaderFile .
-- Then open the terminal and navigate to `message-tracing-with-stream-processor/guide` and run Ballerina project initializing toolkit.
+- Then open the terminal and navigate to `message-tracing-with-stream-processor/guide` and run Ballerina project initializing toolkit in order to initialize this project as Ballerina project.
 
   ``
      $ ballerina init
   ``
-- Also you need to clone and build the ballerina-sp-extension in the following repository [https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension](https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension)
+- Also clone and build the ballerina-sp-extension in the following repository [https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension](https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension)
 
-- After the build  navigate to `ballerina-sp-extension/target/distribution/` and copy all the jar files to your `bre/lib` folder in your ballerina distribution.
+- After the build  navigate to `ballerina-sp-extension/target/distribution/` and copy all the JAR files to your `bre/lib` folder in your ballerina distribution.
 
-- Start WSO2 Stream Processor dashboard and worker. Set up  [distributed message tracing.](https://docs.wso2.com/display/SP420/Distributed+Message+Tracer)
+- Start WSO2 Stream Processor dashboard and worker.Set up [distributed message tracing.](https://docs.wso2.com/display/SP430/Distributed+Message+Tracer)
 
 - Use `admin` as username and password. Include the following for your business rules.
 
@@ -110,7 +109,7 @@ reporter.wso2sp.publisher.service.name="ballerina_hello_world"
     Parent span is defined - true 
     ```
     
-- Leave the rest of the fields as default values for parent span.
+- Leave the rest of the fields as default values in the business rules.
 
 ### Development of student and marks service with Stream Processor
 
@@ -156,7 +155,7 @@ endpoint http:Client marksServiceEP {
     url: " http://localhost:9191"
 };
 
-// Endpoint for mysql client.
+// Endpoint for MySQL client.
 public endpoint mysql:Client databaseEP {
     host: "localhost",
     port: 3306,
@@ -167,7 +166,7 @@ public endpoint mysql:Client databaseEP {
     dbOptions: { useSSL: false }
 };
 
-// This service listener.
+// The port listener for the student services..
 endpoint http:Listener studentServiceListener {
     port: 9292
 };
@@ -186,24 +185,24 @@ service<http:Service> StudentData bind studentServiceListener {
     }
     // Add Students resource used to add student records to the system.
     addStudents(endpoint httpConnection, http:Request request) {
-        // Initialize an empty http response message.
-        requestCounts++;
+        // Initialize an empty HTTP response message.
+        requestCounts += 1;
         http:Response response;
 
         // Accepting the Json payload sent from a request.
         json payloadJson = check request.getJsonPayload();
 
         //Converting the payload to Student type.
-        Student studentData = check <Student>payloadJson;
+        Student studentDetails = check <Student>payloadJson;
 
         // Calling the function insertData to update database.
-        json returnValue = insertData (studentData.name, studentData.age, studentData.mobNo, studentData.address);
+        json returnValue = insertData (studentDetails.name, studentDetails.age, studentDetails.mobNo, studentDetails.address);
 
-        // Send the response back to the client with the returned json value from insertData function.
+        // Send the response back to the client with the returned JSON value from insertData function.
         response.setJsonPayload(returnValue);
         _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e)};
 
-        // The below function adds tags that are to be passed as metrics in the traces. These tags are added to the default ootb system span.
+        // The below function adds tags that are to be passed as metrics in the traces. These tags are added to the default system span.
         _ = observe:addTagToSpan("tot_requests", <string>requestCounts);
         _ = observe:addTagToSpan("error_counts", <string>errors);
     }
@@ -214,21 +213,21 @@ service<http:Service> StudentData bind studentServiceListener {
     }
     // View students resource is to get all the students details and send to the requested user.
     viewStudents(endpoint httpConnection, http:Request request) {
-        requestCounts++;
+        requestCounts += 1;
         int childSpanId = check observe:startSpan("Obtain details span");
         http:Response response;
         json status = {};
 
         int spanId2 = observe:startRootSpan("Database call span");
         var returnValue = databaseEP->select("SELECT * FROM student", Student, loadToMemory = true);
-        //Sending a request to mysql endpoint and getting a response with required data table.
+        //Sending a request to MySQL endpoint and getting a response with required data table.
         _ = observe:finishSpan(spanId2);
         // A table is declared with Student as its type.
         table<Student> dataTable;
 
         // Match operator used to check if the response returned value with one of the types below.
         match returnValue {
-            table tableReturned => dt = tableReturned;
+            table tableReturned => dataTable = tableReturned;
             error e => io:println("Select data from student table failed: "
                     + e.message);
         }
@@ -238,7 +237,7 @@ service<http:Service> StudentData bind studentServiceListener {
             io:println("Student:" + row.id + "|" + row.name + "|" + row.age);
         }
 
-        // Table is converted to json.
+        // Table is converted to JSON.
         var jsonConversionRet = <json>dataTable;
         match jsonConversionRet {
             json jsonResult => {
@@ -265,10 +264,10 @@ service<http:Service> StudentData bind studentServiceListener {
     }
     // Test Error resource to make a mock error.
     testError(endpoint httpConnection, http:Request request) {
-        requestCounts++;
+        requestCounts += 1;
         http:Response response;
 
-        errors++;
+        errors += 1;
         io:println(errors);
         // The below function adds tags that are to be passed as metrics in the traces. These tags are added to the default ootb system span.
         _ = observe:addTagToSpan("error_counts", <string>errors);
@@ -284,16 +283,15 @@ service<http:Service> StudentData bind studentServiceListener {
     }
     // Delete Students resource for deleteing a student using id.
     deleteStudent(endpoint httpConnection, http:Request request, int stuId) {
-        requestCounts++;
+        requestCounts += 1;
         http:Response response;
         json status = {};
 
-        // Calling deleteData function with id as parameter and get a return json object.
+        // Calling deleteData function with id as parameter and get a return JSON object.
         var returnValue = deleteData(stuId);
 
-
-        // Pass the obtained json object to the request.
-        response.setJsonPayload(ret);
+        // Pass the obtained JSON object to the request.
+        response.setJsonPayload(returnValue);
         _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e) };
         // The below function adds tags that are to be passed as metrics in the traces. These tags are added to the default ootb system span.
         _ = observe:addTagToSpan("tot_requests", <string>requestCounts);
@@ -306,7 +304,7 @@ service<http:Service> StudentData bind studentServiceListener {
     }
     // Get marks resource for obtaining marks of a particular student.
     getMarks(endpoint httpConnection, http:Request request, int stuId) {
-        requestCounts++;
+        requestCounts += 1;
         http:Response response;
         json result;
 
@@ -352,8 +350,8 @@ service<http:Service> StudentData bind studentServiceListener {
 # + age -   Student age.
 # + mobNo - Student mobile number.
 # + address-Student address.
-# + return -This function returns a json object. If data is added it returns json containing a status and id of student added.
-#           If data is not added , it returns the json containing a status and error message.
+# + return -This function returns a JSON object. If data is added it returns JSON containing a status and id of student added.
+#           If data is not added , it returns the JSON containing a status and error message.
 
 public function insertData(string name, int age, int mobNo, string address) returns (json) {
     json updateStatus;
@@ -395,8 +393,8 @@ public function insertData(string name, int age, int mobNo, string address) retu
 # `deleteData()` is a function to delete a student's data from student records database.
 #
 # + stuId -  This is the id of the student to be deleted.
-# + return - This function returns a json object. If data is deleted it returns json containing a status.
-#            If data is not deleted , it returns the json containing a status and error message.
+# + return - This function returns a JSON object. If data is deleted it returns JSON containing a status.
+#            If data is not deleted , it returns the JSON containing a status and error message.
 
 public function deleteData(int stuId) returns (json) {
     json status = {};
@@ -476,7 +474,7 @@ type Marks record {
     int science;
 };
 
-// This service listener.
+// The port listener for marks services..
 endpoint http:Listener marksServiceListener{
     port: 9191
 };
@@ -494,7 +492,7 @@ service<http:Service> MarksData bind marksServiceListener {
     getMarks(endpoint httpConnection, http:Request request, int stuId) {
         http:Response response = new;
         json result = findMarks(untaint stuId);
-        // Pass the obtained json object to the requested client.
+        // Pass the obtained JSON object to the requested client.
         response.setJsonPayload(untaint result);
         _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e) };
     }
@@ -503,8 +501,8 @@ service<http:Service> MarksData bind marksServiceListener {
 # `findMarks()` is a function to find a student's marks from the marks record database.
 #
 # + stuId -  This is the id of the student.
-# + return - This function returns a json object. If data is added it returns json containing a status and id of student added.
-#            If data is not added , it returns the json containing a status and error message.
+# + return - This function returns a JSON object. If data is added it returns JSON containing a status and id of student added.
+#            If data is not added , it returns the JSON containing a status and error message.
 
 public function findMarks(int stuId) returns (json) {
     json status = {};
@@ -522,7 +520,7 @@ public function findMarks(int stuId) returns (json) {
             return status;
         }
     }
-    // Converting the obtained data in table format to json data.
+    // Converting the obtained data in table format to JSON data.
     var jsonConversionValue = <json>dataTable;
     match jsonConversionValue {
         json jsonResult => {
@@ -627,7 +625,7 @@ function addStudent(http:Request req) {
     var mobile = io:readln("Enter mobile number: ");
     var add = io:readln("Enter Student address: ");
 
-    // Create the request as json message.
+    // Create the request as jsJSONon message.
     json jsonMsg = { "name": name, "age": check <int>age, "mobNo": check <int>mobile, "address": add };
     req.setJsonPayload(jsonMsg);
 
@@ -640,7 +638,7 @@ function addStudent(http:Request req) {
             match msg {
                 json jsonPL => {
                     string message = "Status: " + jsonPL["Status"] .toString() + " Added Student Id :- " + jsonPL["id"].toString();
-                    // Extracting data from json received and displaying.
+                    // Extracting data from JSON received and displaying.
                     io:println(message);
                 }
 
@@ -668,11 +666,11 @@ function viewAllStudents() {
                     // Validate to check if records are available.
                     if (lengthof jsonPL >= 1) {
                         int i;
-                        // Loop through the received json array and display data.
+                        // Loop through the received JSON array and display data.
                         while (i < lengthof jsonPL) {
                             message = "Student Name: " + jsonPL[i]["name"] .toString() + ", " + " Student Age: " + jsonPL[i]["age"] .toString();
                             io:println(message);
-                            i++;
+                            i += 1;
                         }
                     } else {
                         // Notify user if no records are available.
@@ -772,7 +770,6 @@ function getMarks() {
 ```
 
 - Now we have completed the implementation of student management service with marks management service.
-
 
 ## Testing 
 

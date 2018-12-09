@@ -81,7 +81,7 @@ function addStudent(http:Request req) {
     var mobile = io:readln("Enter mobile number: ");
     var add = io:readln("Enter Student address: ");
 
-    // Create the request as json message.
+    // Create the request as jsJSONon message.
     json jsonMsg = { "name": name, "age": check <int>age, "mobNo": check <int>mobile, "address": add };
     req.setJsonPayload(jsonMsg);
 
@@ -94,7 +94,7 @@ function addStudent(http:Request req) {
             match msg {
                 json jsonPL => {
                     string message = "Status: " + jsonPL["Status"] .toString() + " Added Student Id :- " + jsonPL["id"].toString();
-                    // Extracting data from json received and displaying.
+                    // Extracting data from JSON received and displaying.
                     io:println(message);
                 }
 
@@ -122,7 +122,7 @@ function viewAllStudents() {
                     // Validate to check if records are available.
                     if (lengthof jsonPL >= 1) {
                         int i;
-                        // Loop through the received json array and display data.
+                        // Loop through the received JSON array and display data.
                         while (i < lengthof jsonPL) {
                             message = "Student Name: " + jsonPL[i]["name"] .toString() + ", " + " Student Age: " + jsonPL[i]["age"] .toString();
                             io:println(message);

@@ -35,7 +35,7 @@ endpoint http:Client marksServiceEP {
     url: " http://localhost:9191"
 };
 
-// Endpoint for mysql client.
+// Endpoint for MySQL client.
 public endpoint mysql:Client databaseEP {
     host: "localhost",
     port: 3306,
@@ -46,7 +46,7 @@ public endpoint mysql:Client databaseEP {
     dbOptions: { useSSL: false }
 };
 
-// This service listener.
+// The port listener for the student services..
 endpoint http:Listener studentServiceListener {
     port: 9292
 };
@@ -65,7 +65,7 @@ service<http:Service> StudentData bind studentServiceListener {
     }
     // Add Students resource used to add student records to the system.
     addStudents(endpoint httpConnection, http:Request request) {
-        // Initialize an empty http response message.
+        // Initialize an empty HTTP response message.
         requestCounts += 1;
         http:Response response;
 
@@ -78,7 +78,7 @@ service<http:Service> StudentData bind studentServiceListener {
         // Calling the function insertData to update database.
         json returnValue = insertData (studentDetails.name, studentDetails.age, studentDetails.mobNo, studentDetails.address);
 
-        // Send the response back to the client with the returned json value from insertData function.
+        // Send the response back to the client with the returned JSON value from insertData function.
         response.setJsonPayload(returnValue);
         _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e)};
 
@@ -100,7 +100,7 @@ service<http:Service> StudentData bind studentServiceListener {
 
         int spanId2 = observe:startRootSpan("Database call span");
         var returnValue = databaseEP->select("SELECT * FROM student", Student, loadToMemory = true);
-        //Sending a request to mysql endpoint and getting a response with required data table.
+        //Sending a request to MySQL endpoint and getting a response with required data table.
         _ = observe:finishSpan(spanId2);
         // A table is declared with Student as its type.
         table<Student> dataTable;
@@ -117,7 +117,7 @@ service<http:Service> StudentData bind studentServiceListener {
             io:println("Student:" + row.id + "|" + row.name + "|" + row.age);
         }
 
-        // Table is converted to json.
+        // Table is converted to JSON.
         var jsonConversionRet = <json>dataTable;
         match jsonConversionRet {
             json jsonResult => {
@@ -167,10 +167,10 @@ service<http:Service> StudentData bind studentServiceListener {
         http:Response response;
         json status = {};
 
-        // Calling deleteData function with id as parameter and get a return json object.
+        // Calling deleteData function with id as parameter and get a return JSON object.
         var returnValue = deleteData(stuId);
 
-        // Pass the obtained json object to the request.
+        // Pass the obtained JSON object to the request.
         response.setJsonPayload(returnValue);
         _ = httpConnection->respond(response) but { error e => log:printError("Error sending response", err = e) };
         // The below function adds tags that are to be passed as metrics in the traces. These tags are added to the default ootb system span.
@@ -230,8 +230,8 @@ service<http:Service> StudentData bind studentServiceListener {
 # + age -   Student age.
 # + mobNo - Student mobile number.
 # + address-Student address.
-# + return -This function returns a json object. If data is added it returns json containing a status and id of student added.
-#           If data is not added , it returns the json containing a status and error message.
+# + return -This function returns a JSON object. If data is added it returns JSON containing a status and id of student added.
+#           If data is not added , it returns the JSON containing a status and error message.
 
 public function insertData(string name, int age, int mobNo, string address) returns (json) {
     json updateStatus;
@@ -273,8 +273,8 @@ public function insertData(string name, int age, int mobNo, string address) retu
 # `deleteData()` is a function to delete a student's data from student records database.
 #
 # + stuId -  This is the id of the student to be deleted.
-# + return - This function returns a json object. If data is deleted it returns json containing a status.
-#            If data is not deleted , it returns the json containing a status and error message.
+# + return - This function returns a JSON object. If data is deleted it returns JSON containing a status.
+#            If data is not deleted , it returns the JSON containing a status and error message.
 
 public function deleteData(int stuId) returns (json) {
     json status = {};
