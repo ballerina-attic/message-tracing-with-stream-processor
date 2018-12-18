@@ -1,28 +1,40 @@
 import ballerina/io;
 import ballerina/http;
 import ballerina/test;
+import ballerina/log;
 
-endpoint http:Client studentDataEP  {
-    url: "http://localhost:9292"
-};
+http:Client studentService = new("http://localhost:9292",
+    config = { httpVersion: "2.0" });
+
 
 @test:Config
 // Function to test GET resource 'testError'.
-function testMockError() {
-    // Initialize the empty http request.
+function testingMockError() {
+    // Initialize the empty HTTP request.
     http:Request request;
     // Send 'GET' request and obtain the response.
-    http:Response response = check studentDataEP->get("/records/testError");
-    string res = check  response.getTextPayload();
-    test:assertEquals(res,"Test Error made",msg = "Test error success");
+    var response = studentService->get("/records/testError");
+    if (response is http:Response){
+        var res = response.getTextPayload();
+        test:assertEquals(res,"Test Error made", msg = "Test error success");
+    }
+
 }
 
 @test:Config
-function testinvalidDataDeletion() {
+function invalidDataDeletion() {
     http:Request request;
     // Send 'GET' request and obtain the response.
-    http:Response response = check studentDataEP->get("/records/deleteStu/9999");
-    // Expected response json is as below.
-    json res = check  response.getJsonPayload();
-    test:assertEquals(res.toString(),"{\"Status\":\"Data Not Found\"}",msg = "Test error success");
+    var response =  studentService->get("/records/deleteStu/9999");
+    if (response is http:Response){
+        // Expected response JSON is as below.
+        var res = response.getJsonPayload();
+
+        if (res is json) {
+            test:assertEquals(res.toString(), "{\"Status\":\"Data Not Found\"}", msg = "Test error success");
+        }
+        else {
+            log:printError("Error", err = res);
+        }
+    }
 }
