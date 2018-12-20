@@ -44,7 +44,7 @@ mysql:Client studentDB = new({
         dbOptions: { useSSL: false }
     });
 
-// Listener for the student service.
+// Port Listener for the student service.
 listener http:Listener studentServiceListener = new(9292);
 
 // Student data service.
@@ -76,9 +76,7 @@ service studentData on studentServiceListener {
             if (studentDetails is Student) {
                 io:println(studentDetails);
                 // Calling the function insertData to update database.
-                json returnValue = insertData(untaint studentDetails.name, untaint studentDetails.age, untaint
-                    studentDetails.mobNo, untaint studentDetails.
-                    address);
+                json returnValue = insertData(untaint studentDetails.name, untaint studentDetails.age, untaint studentDetails.mobNo, untaint studentDetails.address);
                 response.setJsonPayload(untaint returnValue);
             }
 

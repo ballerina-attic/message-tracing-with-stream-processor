@@ -3,9 +3,7 @@ import ballerina/http;
 import ballerina/test;
 import ballerina/log;
 
-http:Client studentService = new("http://localhost:9292",
-    config = { httpVersion: "2.0" });
-
+http:Client studentService = new("http://localhost:9292");
 
 @test:Config
 // Function to test GET resource 'testError'.
@@ -18,7 +16,6 @@ function testingMockError() {
         var res = response.getTextPayload();
         test:assertEquals(res,"Test Error made", msg = "Test error success");
     }
-
 }
 
 @test:Config

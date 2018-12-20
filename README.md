@@ -77,7 +77,7 @@ javax.net.ssl.trustStore="<SET ABSOLUTE PATH>/wso2carbon.jks"
 javax.net.ssl.trustStorePassword="admin"
 reporter.wso2sp.publisher.service.name="ballerina_hello_world"
 ```
-- In the ballerina.conf file, the absolute path has to be set for the databridge agent config yaml file and the wso2carbon.jks file in order to configure the databridge agent and the wso2carbon keystore. This wso2carbon keystore is configuration is required when the databridge is used.
+- In the ballerina.conf file, the absolute path has to be set for the databridge agent config yaml file and the wso2carbon.jks file in order to configure the databridge agent and the wso2carbon keystore. This wso2carbon keystore configuration is required when the databridge is used.
 - These files can be found [here](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources).
 - Also update the [data.agent.config.yaml](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/main/resources/data.agent.config.yaml) file by including the absolute path of the [required files](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources) in the following fields. This is done for the purpose of configuring security keys for a secured data communication in data agent.
   - trustStorePath, keystoreLocation, secretPropertiesFile, masterKeyReaderFile .

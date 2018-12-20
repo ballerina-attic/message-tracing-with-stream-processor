@@ -18,6 +18,7 @@ import ballerina/http;
 import ballerina/io;
 import ballerina/log;
 
+// Port for scraping student details.
 http:Client studentService = new("http://localhost:9292");
 
 public function main() {
