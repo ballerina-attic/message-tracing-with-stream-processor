@@ -80,13 +80,17 @@ reporter.wso2sp.publisher.service.name="ballerina_hello_world"
 - In the ballerina.conf file, the absolute path has to be set for the databridge agent config yaml file and the wso2carbon.jks file in order to configure the databridge agent and the wso2carbon keystore. This wso2carbon keystore configuration is required when the databridge is used.
 - These files can be found [here](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources).
 - Also update the [data.agent.config.yaml](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/main/resources/data.agent.config.yaml) file by including the absolute path of the [required files](https://github.com/ballerina-guides/message-tracing-with-stream-processor/tree/master/resources/main/resources) in the following fields. This is done for the purpose of configuring security keys for a secured data communication in data agent.
-  - trustStorePath, keystoreLocation, secretPropertiesFile, masterKeyReaderFile .
+    
+  ``
+    trustStorePath, keystoreLocation, secretPropertiesFile, masterKeyReaderFile
+  ``
   
 - Then open the terminal and navigate to `message-tracing-with-stream-processor/guide` and run Ballerina project initializing toolkit in order to initialize this project as Ballerina project.
 
   ``
      $ ballerina init
   ``
+  
 - Also clone and build the ballerina-sp-extension in the following repository [https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension](https://github.com/ballerina-platform/ballerina-observability/tree/master/tracing-extensions/modules/ballerina-sp-extension)
 
 - After the build, navigate to `ballerina-sp-extension/target/distribution/` and copy all the JAR files to your `bre/lib` folder in your ballerina distribution.
@@ -800,29 +804,28 @@ $ ballerina run --config <path-to-conf>/ballerina.conf students
 #### Views of traces
  After making some HTTP requests, go to the distributed message tracing dashboard in your WSO2 Stream Processor portal.
 
- - To view the message traces as indicated below, click the Search button in the Dashboard.
+ - To view the message traces as indicated below, click the `Search` button in the Dashboard.
  
-![SP](images/trace1.png "SP")
+[![SP](images/trace1.png "SP")](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/images/trace1.png)
  
  - To view a particular trace, click on the row of it. You will view the following.
  
-![SP](images/trace2.png "SP")
+[![SP](images/trace2.png "SP")](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/images/trace2.png)
     
  - To view span details with the metrics as shown below, click on a particular span.
 
- 
-![SP](images/trace3.png "SP")
+[![SP](images/trace3.png "SP")](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/images/trace3.png)
 
  To filter the received message traces, enter the service name, time, and/or resource name in the search box.
 
  - Tracing search -
   
- ![SP](images/trace6.png "SP")
+[![SP](images/trace6.png "SP")](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/images/trace6.png)
   
  - Filter using service name and time -
 
- ![SP](images/trace5.png "SP")
+[![SP](images/trace5.png "SP")](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/images/trace5.png)
      
  - Filter using resource name and time -
 
-  ![SP](images/trace4.png "SP")
+[![SP](images/trace4.png "SP")](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/images/trace4.png)
