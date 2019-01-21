@@ -35,6 +35,10 @@ This system illustrates the manipulation of student details in a school/college 
 - [WSO2 - Stream Processor v4.3.0 or above](https://github.com/wso2/product-sp/releases)
 - A Text Editor or an IDE 
 
+**Optional requirements**
+- Ballerina IDE plugins ([IntelliJ IDEA](https://plugins.jetbrains.com/plugin/9520-ballerina), 
+[VSCode](https://marketplace.visualstudio.com/items?itemName=ballerina.ballerina))
+
 ## Implementation
 
 > If you want to skip the basics, you can download the GitHub repo and continue from the [Testing](#testing) section.
