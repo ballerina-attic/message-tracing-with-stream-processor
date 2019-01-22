@@ -30,13 +30,11 @@ This system illustrates the manipulation of student details in a school/college 
 
 ## Prerequisites
  
-- [Ballerina Distribution](https://ballerina.io/downloads/)
-- [MySQL](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql)
-- [WSO2 - Stream Processor v4.3.0 or above](https://github.com/wso2/product-sp/releases)
+- [Ballerina Distribution](https://ballerina.io/learn/getting-started/)
 - A Text Editor or an IDE 
-
-## Optional requirements
-- Ballerina IDE plugins ([VSCode](https://marketplace.visualstudio.com/items?itemName=ballerina.ballerina), [IntelliJ IDEA](https://plugins.jetbrains.com/plugin/9520-ballerina))
+> **Tip**: You can install the following Ballerina IDE plugins: [VSCode](https://marketplace.visualstudio.com/items?itemName=ballerina.ballerina), [IntelliJ IDEA](https://plugins.jetbrains.com/plugin/9520-ballerina)
+- [MySQL](https://github.com/ballerina-guides/message-tracing-with-stream-processor/blob/master/resources/testdb.sql)
+- [WSO2 - Stream Processor v4.3.0 or above](https://github.com/wso2/product-sp/releases) 
 
 ## Implementation
 
